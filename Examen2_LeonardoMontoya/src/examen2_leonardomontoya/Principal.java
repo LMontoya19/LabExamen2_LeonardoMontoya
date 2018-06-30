@@ -94,6 +94,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tree_favoritos = new javax.swing.JTree();
+        jButton14 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jButton1 = new javax.swing.JButton();
@@ -539,12 +540,21 @@ public class Principal extends javax.swing.JFrame {
         tree_favoritos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane5.setViewportView(tree_favoritos);
 
+        jButton14.setText("Reproducir");
+        jButton14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton14MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(180, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
@@ -554,6 +564,10 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(jButton14)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ver Favoritos", jPanel8);
@@ -567,7 +581,7 @@ public class Principal extends javax.swing.JFrame {
         jd_ingresado.getContentPane().setLayout(jd_ingresadoLayout);
         jd_ingresadoLayout.setHorizontalGroup(
             jd_ingresadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
         );
         jd_ingresadoLayout.setVerticalGroup(
             jd_ingresadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -705,7 +719,7 @@ public class Principal extends javax.swing.JFrame {
     private void jtp_albumesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jtp_albumesStateChanged
         // TODO add your handling code here:
         if (jtp_albumes.getSelectedIndex() == 1) {
-            
+
             DefaultComboBoxModel modelo = (DefaultComboBoxModel) jcb_albumes.getModel();
             modelo.removeAllElements();
             for (Album a : lista_albumes) {
@@ -777,15 +791,15 @@ public class Principal extends javax.swing.JFrame {
         if (lista_albumes.isEmpty()) {
         } else {
             Album p = (Album) jcb_albumpadre.getSelectedItem();
-            p.getLista_canciones().add(new Canciones(jtf_nombrecancion.getText(), jtf_artistacancion.getText(),p, (Integer) spinner_duracion.getValue(), jtf_generocacnion.getText()));
-            
+            p.getLista_canciones().add(new Canciones(jtf_nombrecancion.getText(), jtf_artistacancion.getText(), p, (Integer) spinner_duracion.getValue(), jtf_generocacnion.getText()));
+
         }
 
     }//GEN-LAST:event_jButton11MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
-        
+
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) jcb_albumpadre.getModel();
         modelo.removeAllElements();
         for (Album a : lista_albumes) {
@@ -804,7 +818,7 @@ public class Principal extends javax.swing.JFrame {
         String cs = JOptionPane.showInputDialog(this, "Ingrese password");
         for (Usuario t : lista_usuarios) {
             if (t.getPassword().equals(cs) && t.getUsername().equals(t.getUsername())) {
-               
+
                 actual = t;
                 DefaultListModel modelo = (DefaultListModel) jlist_exploraralbum.getModel();
                 modelo.removeAllElements();
@@ -846,18 +860,30 @@ public class Principal extends javax.swing.JFrame {
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
         // TODO add your handling code here:
         if (jTabbedPane1.getSelectedIndex() == 3) {
-           
+
             DefaultTreeModel modelo = (DefaultTreeModel) tree_favoritos.getModel();
             DefaultMutableTreeNode nudo = (DefaultMutableTreeNode) modelo.getRoot();
+            nudo.removeAllChildren();
             for (Canciones a : actual.getFavoritas()) {
-                System.out.println(actual.getFavoritas().size()+"s");
+                System.out.println(actual.getFavoritas().size() + "s");
                 nudo.add(new DefaultMutableTreeNode(a));
             }
             modelo.reload();
             tree_favoritos.setModel(modelo);
         }
-       
+
     }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jButton14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton14MouseClicked
+        // TODO add your handling code here:
+        DefaultMutableTreeNode m = (DefaultMutableTreeNode) tree_favoritos.getLastSelectedPathComponent();
+        if (m.getUserObject() instanceof Canciones) {
+            System.out.println("hola");
+            Canciones temp = (Canciones) m.getUserObject();
+            hilo_cancion hc = new hilo_cancion(temp.getDuracion());
+            hc.start();
+        }
+    }//GEN-LAST:event_jButton14MouseClicked
 
     /**
      * @param args the command line arguments
@@ -900,6 +926,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

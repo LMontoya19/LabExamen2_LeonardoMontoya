@@ -25,22 +25,27 @@ public class hilo_cancion extends Thread {
 
     @Override
     public void run() {
- 
-                r.setAlwaysOnTop(vive);
-                r.setVisible(true);
+
+        r.setAlwaysOnTop(vive);
+        r.setVisible(true);
+        int i = 0;
         while (vive) {
-           
+
             try {
-              r.jProgressBar1.setMaximum(tiempo);
-              r.jProgressBar1.setValue(r.jProgressBar1.getValue()+1);
-              Thread.sleep(1000);
-           
-                
+                r.jProgressBar1.setMaximum(tiempo);
+                r.jProgressBar1.setValue(r.jProgressBar1.getValue() + 1);
+                r.jLabel1.setText(Integer.toString(i));
+                i++;
+                if(r.jProgressBar1.getValue()==r.jProgressBar1.getMaximum()){
+                vive = false;
+                }
+                Thread.sleep(1000);
+
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }
-
+r.dispose();
     }
 
 }
